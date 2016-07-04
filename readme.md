@@ -4,7 +4,11 @@ A gulp task that builds the translation files from the translation team Google D
 
 ## Installing
 
-Using it in a few simple steps:
+Installing it in a few simple steps:
+
+- Grab it from npm
+
+		npm install te-translation-builder --save
 
 - Get a [credentials file from google developer console](https://www.npmjs.com/package/google-spreadsheet#service-account-recommended-method)
 - Add another key to the json file named spreadsheet, with the spreadsheet id (the long id sheet from the url), so it ends like this (minus the actual info).  
@@ -22,7 +26,6 @@ Using it in a few simple steps:
 		  "client_x509_cert_url": "",
 		  "spreadsheet": ""
 		}
-
 - Save it as translation-settings.json next to your gulpfile.
 - Done
 
