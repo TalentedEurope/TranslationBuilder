@@ -3,9 +3,19 @@ var nunjucks = require('nunjucks');
 var GoogleSpreadsheet = require('google-spreadsheet');
 var async = require('async');
 var fs = require('fs');
+var gutil = require('gulp-util');
 
 gulp.task('translate', function(cb) {
-    var settingsFile = fs.readFileSync('./translation-settings.json');
+    var settingsPath = './translation-settings.json';
+    var settingsFile;
+    try {
+        fs.accessSync(settingsPath);
+    } catch (err) {
+        gutil.log("No translation settings file set, aborting.");
+        cb();
+        return;
+    }
+    settingsFile = fs.readFileSync(settingsPath);
     var settings = JSON.parse(settingsFile); 
     var doc = new GoogleSpreadsheet(settings.spreadsheet);
     var sheet;
@@ -60,14 +70,16 @@ gulp.task('translate', function(cb) {
                 // then the entries for all language.                
                 for (i = 0; i < rows.length; i++) {
                     // Code 1 format
-                    for (j = 0; j < cols.length; j++) {
+                    if (rows[i][sheetCodeCol] == 1) {
+                        // sheet.rowCount gives more rows than it should (lots of them empty) so 
+                        // we ignore the row if key is empty.
                         if (rows[i][sheetKeyCol] == "") break;
-                        if (rows[i][sheetCodeCol] == 1) {
+                        for (j = 0; j < cols.length; j++) {
                             // Todo: Fix this mess of dictionaries, like on the render data.
                             if (typeof(stringData[cols[j]][rows[i][sheetFileCol]]) == 'undefined') {
                                 stringData[cols[j]][rows[i][sheetFileCol]] = {};
                             }
-                            stringData[cols[j]][rows[i][sheetFileCol]][rows[i][sheetKeyCol]] = rows[i][cols[j]];
+                            stringData[cols[j]][rows[i][sheetFileCol]][rows[i][sheetKeyCol]] = rows[i][cols[j]];                            
                         }
                     }
                     // Code 2 format
