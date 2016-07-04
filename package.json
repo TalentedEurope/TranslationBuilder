@@ -1,6 +1,6 @@
 {
   "name": "te-translation-builder",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Builds translations from a google sheet for the Talented Europe project",
   "main": "trans.js",
   "scripts": {

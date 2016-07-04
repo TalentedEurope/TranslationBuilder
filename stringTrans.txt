@@ -3,6 +3,6 @@
 
 return [
     {% for key, value in translations %}
-        '{{ key }}' => '{{ value }}'
+        '{{ key }}' => '{{ value }}',
     {% endfor %}
 ];
