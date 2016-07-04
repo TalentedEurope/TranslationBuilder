@@ -79,7 +79,7 @@ gulp.task('translate', function(cb) {
                             if (typeof(stringData[cols[j]][rows[i][sheetFileCol]]) == 'undefined') {
                                 stringData[cols[j]][rows[i][sheetFileCol]] = {};
                             }
-                            stringData[cols[j]][rows[i][sheetFileCol]][rows[i][sheetKeyCol]] = rows[i][cols[j]];                            
+                            stringData[cols[j]][rows[i][sheetFileCol]][rows[i][sheetKeyCol]] = rows[i][cols[j]].replace(/\'/g, '&apos;');                            
                         }
                     }
                     // Code 2 format
@@ -89,7 +89,7 @@ gulp.task('translate', function(cb) {
                             modelData[rows[i][sheetFileCol]] = [];
                         }
                         for (j = 0; j < cols.length; j++) {
-                            rowInfo[cols[j]] = rows[i][cols[j]]
+                            rowInfo[cols[j]] = rows[i][cols[j]].replace(/\'/g, '&apos;')
                         }
                         modelData[rows[i][sheetFileCol]].push(rowInfo);
                     }
