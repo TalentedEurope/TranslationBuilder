@@ -7,7 +7,7 @@ A gulp task that builds the translation files from the translation team Google D
 Using it in a few simple steps:
 
 - Get a [credentials file from google developer console](https://www.npmjs.com/package/google-spreadsheet#service-account-recommended-method)
-- Add another key to the json file named spreadsheet, with the spreadsheet id (the long id sheet from the url).  
+- Add another key to the json file named spreadsheet, with the spreadsheet id (the long id sheet from the url), so it ends like this (minus the actual info).  
 
 		{
 		  "type": "service_account",
