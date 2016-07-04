@@ -11,7 +11,7 @@
     "europe",
     "translation"
   ],
-  "author": "Pol Cámara",
+  "author": "Talented Europe",
   "license": "MIT",
   "dependencies": {
     "google-spreadsheet": "^2.0.3",
