@@ -16,8 +16,7 @@
   "repository" :
     { "type" : "git"
     , "url" : "https://github.com/TalentedEurope/TranslatorBuilder.git"
-    }
-  
+    },  
   "dependencies": {
     "google-spreadsheet": "^2.0.3",
     "nunjucks": "^2.4.2"
