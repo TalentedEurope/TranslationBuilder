@@ -16,15 +16,15 @@ gulp.task('translate', function(cb) {
         return;
     }
     settingsFile = fs.readFileSync(settingsPath);
-    var settings = JSON.parse(settingsFile); 
+    var settings = JSON.parse(settingsFile);
     var doc = new GoogleSpreadsheet(settings.spreadsheet);
     var sheet;
     var stringData = {};
     var modelData = {};
-    var stringTemplate = __dirname + '/stringTrans.txt'; 
+    var stringTemplate = __dirname + '/stringTrans.txt';
     var stringDir = './resources/lang/';
     var modelDir = './database/seeds/';
-    var modelTemplate = __dirname + '/modelTrans.txt'; 
+    var modelTemplate = __dirname + '/modelTrans.txt';
 
     var sheetKeyCol = "key";
     var sheetFileCol = "file";
@@ -63,15 +63,15 @@ gulp.task('translate', function(cb) {
                 limit: sheet.rowCount
             }, function(err, rows) {
                 var cols = Object.keys(stringData);
-                // So we have 2 formats. Code 1 and 2. 
-                // [Code 1]: aka String data. Stores data to file translations so it needs to store it 
+                // So we have 2 formats. Code 1 and 2.
+                // [Code 1]: aka String data. Stores data to file translations so it needs to store it
                 // to lang/filename and inside that key-value of each entry.
-                // [Code 2]: aka Model data. Stores data on a db seeder. It stores data in filename and 
-                // then the entries for all language.                
+                // [Code 2]: aka Model data. Stores data on a db seeder. It stores data in filename and
+                // then the entries for all language.
                 for (i = 0; i < rows.length; i++) {
                     // Code 1 format
                     if (rows[i][sheetCodeCol] == 1) {
-                        // sheet.rowCount gives more rows than it should (lots of them empty) so 
+                        // sheet.rowCount gives more rows than it should (lots of them empty) so
                         // we ignore the row if key is empty.
                         if (rows[i][sheetKeyCol] == "") break;
                         for (j = 0; j < cols.length; j++) {
@@ -79,7 +79,7 @@ gulp.task('translate', function(cb) {
                             if (typeof(stringData[cols[j]][rows[i][sheetFileCol]]) == 'undefined') {
                                 stringData[cols[j]][rows[i][sheetFileCol]] = {};
                             }
-                            stringData[cols[j]][rows[i][sheetFileCol]][rows[i][sheetKeyCol]] = rows[i][cols[j]].replace(/\'/g, '&apos;');                            
+                            stringData[cols[j]][rows[i][sheetFileCol]][rows[i][sheetKeyCol]] = rows[i][cols[j]].replace(/\'/g, '&apos;');
                         }
                     }
                     // Code 2 format
@@ -93,6 +93,20 @@ gulp.task('translate', function(cb) {
                         }
                         modelData[rows[i][sheetFileCol]].push(rowInfo);
                     }
+
+                    // Code 3 format (it's code 2 but adding a key => value using the key column )
+                    if (rows[i][sheetCodeCol] == 3) {
+                        var rowInfo = {};
+                        if (typeof(modelData[rows[i][sheetFileCol]]) == 'undefined') {
+                            modelData[rows[i][sheetFileCol]] = [];
+                        }
+                        for (j = 0; j < cols.length; j++) {
+                            rowInfo[cols[j]] = rows[i][cols[j]].replace(/\'/g, '&apos;');
+                        }
+                        rowInfo[sheetKeyCol] = rows[i][sheetKeyCol].replace(/\'/g, '&apos;');
+                        modelData[rows[i][sheetFileCol]].push(rowInfo);
+                    }
+
                 }
                 step();
             });
