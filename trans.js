@@ -63,6 +63,8 @@ gulp.task('translate', function(cb) {
                 limit: sheet.rowCount
             }, function(err, rows) {
                 var cols = Object.keys(stringData);
+                var english_col = 0;
+                var cell_data = '';
                 // So we have 2 formats. Code 1 and 2.
                 // [Code 1]: aka String data. Stores data to file translations so it needs to store it
                 // to lang/filename and inside that key-value of each entry.
@@ -79,7 +81,8 @@ gulp.task('translate', function(cb) {
                             if (typeof(stringData[cols[j]][rows[i][sheetFileCol]]) == 'undefined') {
                                 stringData[cols[j]][rows[i][sheetFileCol]] = {};
                             }
-                            stringData[cols[j]][rows[i][sheetFileCol]][rows[i][sheetKeyCol]] = rows[i][cols[j]].replace(/\'/g, '&apos;');
+                            cell_data = rows[i][cols[j]] || rows[i][cols[english_col]];
+                            stringData[cols[j]][rows[i][sheetFileCol]][rows[i][sheetKeyCol]] = cell_data.replace(/\'/g, '&apos;');
                         }
                     }
                     // Code 2 format
@@ -89,7 +92,8 @@ gulp.task('translate', function(cb) {
                             modelData[rows[i][sheetFileCol]] = [];
                         }
                         for (j = 0; j < cols.length; j++) {
-                            rowInfo[cols[j]] = rows[i][cols[j]].replace(/\'/g, '&apos;')
+                            cell_data = rows[i][cols[j]] || rows[i][cols[english_col]];
+                            rowInfo[cols[j]] = cell_data.replace(/\'/g, '&apos;')
                         }
                         modelData[rows[i][sheetFileCol]].push(rowInfo);
                     }
@@ -101,7 +105,8 @@ gulp.task('translate', function(cb) {
                             modelData[rows[i][sheetFileCol]] = [];
                         }
                         for (j = 0; j < cols.length; j++) {
-                            rowInfo[cols[j]] = rows[i][cols[j]].replace(/\'/g, '&apos;');
+                            cell_data = rows[i][cols[j]] || rows[i][cols[english_col]];
+                            rowInfo[cols[j]] = cell_data.replace(/\'/g, '&apos;');
                         }
                         rowInfo[sheetKeyCol] = rows[i][sheetKeyCol].replace(/\'/g, '&apos;');
                         modelData[rows[i][sheetFileCol]].push(rowInfo);
