@@ -73,6 +73,7 @@ gulp.task('translate', function(cb) {
                                 stringData[cols[j]][rows[i][sheetFileCol]] = {};
                             }
                             cell_data = rows[i][cols[j]] || rows[i][cols[english_col]];
+                            cell_data = cell_data.replace(/(\r\n|\n|\r)/gm, '');
                             stringData[cols[j]][rows[i][sheetFileCol]][rows[i][sheetKeyCol]] = cell_data;
                         }
                     }
