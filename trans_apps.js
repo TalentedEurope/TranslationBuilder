@@ -98,7 +98,7 @@ gulp.task('translate', function(cb) {
                 } catch (err) {
                     fs.mkdirSync(targetDir);
                 }
-                fs.writeFile(targetDir + currentLang + '.json', translations);
+                fs.writeFile(targetDir + currentLang + '.json', translations, (error) => {});
             }
 
             step();

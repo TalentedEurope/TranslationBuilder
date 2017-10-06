@@ -139,7 +139,7 @@ gulp.task('translate', function(cb) {
                     } catch (err) {
                         fs.mkdirSync(targetDir);
                     }
-                    fs.writeFile(targetDir + currentFile + '.php', translations);
+                    fs.writeFile(targetDir + currentFile + '.php', translations, (error) => {});
                 }
             }
 
@@ -151,7 +151,7 @@ gulp.task('translate', function(cb) {
                     ModelName: currentFile,
                     translations: modelData[currentFile]
                 });
-                fs.writeFile(modelDir + currentFile + 'TableSeeder.php', translations);
+                fs.writeFile(modelDir + currentFile + 'TableSeeder.php', translations, (error) => {});
             }
             step();
         }
